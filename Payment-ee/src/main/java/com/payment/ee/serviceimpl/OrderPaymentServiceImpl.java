@@ -68,14 +68,20 @@ public class OrderPaymentServiceImpl implements OrderPaymentService {
 	public boolean registerTransaction(PaymentTransaction paymentTransaction) throws Exception {
 		OrderPayment orderPayment = new OrderPayment();
 		Transaction transaction = new Transaction();
-
+		if(paymentTransaction.getCurrency() ==null || "".equals(paymentTransaction.getCurrency())) {
+			throw new CurrencyNotSupportedException(AppExceptionMessages.CURRENCY_IS_REQUIRED);
+		}
 		Currency currency = retrieveCurrency(paymentTransaction.getCurrency());
 		
 		if(currency==null) {
 			throw new CurrencyNotSupportedException(
 					AppExceptionMessages.CURRENCY_NOT_SUPPORTED_EXCEPTION_MSG + " [" + paymentTransaction.getCurrency() + "]");
 		}
-
+		
+		
+		if(paymentTransaction.getPaymentMethod() == null || "".equals(paymentTransaction.getPaymentMethod())) {
+			throw new PaymentMethodNotSupportedException(AppExceptionMessages.PAYMENT_METHOD_IS_REQUIRED);
+		}
 		PaymentMethod paymentMethod = retrievePaymentMethod(paymentTransaction.getPaymentMethod());
 		
 		if(paymentMethod == null) {
@@ -83,7 +89,10 @@ public class OrderPaymentServiceImpl implements OrderPaymentService {
 					AppExceptionMessages.PAYMENT_METHOD_NOT_SUPPORTED_EXCEPTION_MSG + " [" + paymentTransaction.getPaymentMethod()
 							+ "]");
 		}
-
+		
+		if(paymentTransaction.getTransactionType() == null || "".equals(paymentTransaction.getTransactionType())) {
+			throw new PaymentMethodNotSupportedException(AppExceptionMessages.PAYMENT_METHOD_IS_REQUIRED);
+		}
 		OrderStatus orderStatus = retrieveOrderStatus(paymentTransaction.getTransactionType());
 		
 		if(orderStatus == null) {
@@ -103,6 +112,10 @@ public class OrderPaymentServiceImpl implements OrderPaymentService {
 		orderPayment.setStatus(status);
 		orderPayment.setToken(paymentTransaction.getToken());
 		orderPayment.setOrderStatus(orderStatus);
+		
+		if(paymentTransaction.getTransactionType() == null || "".equals(paymentTransaction.getTransactionType())) {
+			throw new TransactionTypeNotSupportedException(AppExceptionMessages.TRANSACTION_TYPE_IS_REQUIRED);
+		}
 
 		TransactionType transactionType = retrieveTransactionType(paymentTransaction.getTransactionType());
 		
@@ -199,14 +212,20 @@ public class OrderPaymentServiceImpl implements OrderPaymentService {
 	public void procceedWithTransaction(PaymentTransaction paymentTransaction) throws Exception {
 		// get the object of the requested transaction type received and an exception
 		// will be thrown in case invalid transaction type
-		TransactionType nextTransactionTypeRequestedByClient = retrieveTransactionType(
-				paymentTransaction.getTransactionType());
+		if(paymentTransaction.getTransactionType() == null || "".equals(paymentTransaction.getTransactionType())) {
+			throw new PaymentMethodNotSupportedException(AppExceptionMessages.PAYMENT_METHOD_IS_REQUIRED);
+		}
+		TransactionType nextTransactionTypeRequestedByClient = retrieveTransactionType(paymentTransaction.getTransactionType());
 
 		// get the object of the requested order status received and an exception will
 		// be thrown in case invalid transaction type
 		OrderStatus nextOrderStatusRequestByClient = retrieveOrderStatus(paymentTransaction.getTransactionType());
 
 		// Get Order object from order_payment by Client ID and orderID
+		if(paymentTransaction == null || paymentTransaction.getClientId() == null || paymentTransaction.getOrderId() == null 
+				|| "".equals(paymentTransaction.getClientId()) || "".equals(paymentTransaction.getOrderId())) {
+			throw new Exception(AppExceptionMessages.INVALID_REQUEST);
+		}
 		OrderPayment orderPayment = retrieveOrderPaymentByClientIdOrderId(paymentTransaction);
 
 		// Multiple successful payments for the same order should be prevented

@@ -34,15 +34,20 @@ public class InquiryServiceImpl implements InquiryService {
 	public PaymentTransaction findByClientIdOrderId(PaymentTransaction paymentTransaction) throws Exception {
 		OrderPayment result =  null;
 		try {
-			
+			// check for client ID & order ID availability
+			if(paymentTransaction == null || paymentTransaction.getClientId() == null || paymentTransaction.getOrderId() == null 
+					|| "".equals(paymentTransaction.getClientId()) || "".equals(paymentTransaction.getOrderId())) {
+				throw new Exception(AppExceptionMessages.INVALID_REQUEST);
+			}
 			result = orderPaymentDAO.findByClientIdOrderId(paymentTransaction);
+			
 			paymentTransaction.setAmount(result.getAmount());
 			paymentTransaction.setCurrency(result.getCurrency().getCurrencyCode());
 			paymentTransaction.setPaymentMethod(result.getPaymentMethod().getPaymentMethodName());
 			paymentTransaction.setTransactionType(result.getOrderStatus().getOrderStatusName());
 		}catch (Exception e) {
 			if (e instanceof NoResultException) {
-				// in case the currency is not supported (Not found in the DB)
+				// in case the orderID or/and ClientID are not found in the DB
 				throw new InvalidOrderIdException(AppExceptionMessages.INVALID_CLIENT_ID_EXCEPTION_MSG + 
 						" [Client ID-> "+paymentTransaction.getClientId()+", Order ID->" +paymentTransaction.getOrderId()+"]");
 			} else {
@@ -64,6 +69,11 @@ public class InquiryServiceImpl implements InquiryService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<PaymentTransaction> findPendingByClientId(PaymentTransaction paymentTransaction, List<Integer> pendingStatus) throws Exception{
+		// check for client ID availability
+		if(paymentTransaction == null || paymentTransaction.getClientId() == null || "".equals(paymentTransaction.getClientId())) {
+			throw new Exception(AppExceptionMessages.INVALID_REQUEST);
+		}
+					
 		List<PaymentTransaction> pendingPaymentTransactionOrderList = new ArrayList<PaymentTransaction>();
 		try {
 			List<OrderPayment> pendingOrderList = orderPaymentDAO.findPendingByClientId(paymentTransaction, pendingStatus);
@@ -104,6 +114,10 @@ public class InquiryServiceImpl implements InquiryService {
 	@Transactional(readOnly = true)
 	public double findTotalAmountOfSuccessPayments(PaymentTransaction paymentTransaction) throws Exception {
 		// TODO Auto-generated method stub
+		// check for client ID availability
+		if(paymentTransaction == null || paymentTransaction.getClientId() == null || "".equals(paymentTransaction.getClientId())) {
+			throw new Exception(AppExceptionMessages.INVALID_REQUEST);
+		}
 		Number number = orderPaymentDAO.findTotalAmountOfSuccessPayments(paymentTransaction);
 		
 		if(number == null) {

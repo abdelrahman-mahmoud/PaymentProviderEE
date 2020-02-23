@@ -71,15 +71,24 @@ public class ExtractorController {
 			for (String param : list) {
 				if (!param.contains("=")) {
 					operation = param;
+					boolean isValidOperation = false;
 					if (operation.equalsIgnoreCase(AppConstants.TRANSACTION_TYPE_REGISTER)) {
 						paymentTransaction.setTransactionType(AppConstants.TRANSACTION_TYPE_REG_CODE);
+						isValidOperation = true;
 					} else if (operation.equalsIgnoreCase(AppConstants.TRANSACTION_TYPE_AUTHORISE)) {
 						paymentTransaction.setTransactionType(AppConstants.TRANSACTION_TYPE_AUTH_CODE);
+						isValidOperation = true;
 					} else if (operation.equalsIgnoreCase(AppConstants.TRANSACTION_TYPE_CAPTURE)) {
 						paymentTransaction.setTransactionType(AppConstants.TRANSACTION_TYPE_CAP_CODE);
+						isValidOperation = true;
 					} else if (operation.equalsIgnoreCase(AppConstants.TRANSACTION_TYPE_REVERSE)) {
 						paymentTransaction.setTransactionType(AppConstants.TRANSACTION_TYPE_REV_CODE);
+						isValidOperation = true;
 					}
+					if(operation == null || "".equals(operation) || !isValidOperation) {
+						throw new Exception(AppExceptionMessages.INVALID_ARGUMENTS);
+					}
+					
 					continue;
 				}
 
@@ -111,6 +120,7 @@ public class ExtractorController {
 						paymentTransaction.setToDateStr(str[1]);
 					}
 				}
+				
 			}
 		}else {
 			throw new Exception(AppExceptionMessages.INVALID_ARGUMENTS);

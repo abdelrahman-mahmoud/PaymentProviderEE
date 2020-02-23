@@ -51,6 +51,10 @@ public class PaymentController {
 	private void registerTransaction(PaymentTransaction paymentTransaction) {
 		OutputMessage outputMessage = null;
 		try {
+			if(paymentTransaction == null) {
+				throw new Exception("ERROR");
+			}
+			
 			boolean isTransactionRegistered = orderPaymentService.registerTransaction(paymentTransaction);
 			if(isTransactionRegistered) {
 				outputMessage = new OutputMessage(AppConstants.TRANSACTION_TYPE_REGISTER, AppConstants.STATUS_SUCCESS, null);

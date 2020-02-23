@@ -12,5 +12,9 @@ public class AppExceptionMessages {
 	public static final String ORDER_IS_ALREADY_CAPTURED = "Multiple successful payments for the same order is not allowed";
 	public static final String No_RECORD_MATCHES_THE_SEARCH_CRITERIA = "No Record(s) matches the search criteria ";
 	public static final String INVALID_ARGUMENTS = "Please specify a command. Available commands: register, authorise, capture, reverse, findByOrder, findPending, findTotal";
+	public static final String CURRENCY_IS_REQUIRED = "Currency is Required";
+	public static final String PAYMENT_METHOD_IS_REQUIRED = "Payment is Required";
+	public static final String TRANSACTION_TYPE_IS_REQUIRED = "Transaction Type is required";
+	public static final String INVALID_REQUEST = "Invalid Request";
 
 }
