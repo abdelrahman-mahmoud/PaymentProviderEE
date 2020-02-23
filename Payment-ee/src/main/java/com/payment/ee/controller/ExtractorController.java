@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.payment.ee.constants.AppConstants;
+import com.payment.ee.constants.AppExceptionMessages;
 import com.payment.ee.pojo.PaymentTransaction;
 
 @Component
@@ -24,7 +25,6 @@ public class ExtractorController {
 	private String operation = null;
 	private PaymentTransaction paymentTransaction = null;
 	
-	private boolean isDevMode = false;
 	
 	/**
      * Extract and perform the requested operation (either payment or inquiry) and the payment transaction information
@@ -35,14 +35,12 @@ public class ExtractorController {
 	public void perform(String[] args) throws Exception {
 		//String[] argDev = {"register","clientId=IBEE","orderId=book-37843","amount=250","currency=EUR","payMethod=Cash","payTokenId=cc-367b9832f651a01"};
 		//String[] argDev = {"totalAmountOfSuccessPayments","clientId=C-ID-4", "fromDate=2020-02-21" , "toDate=2020-02-24"};
-		String[] argDev = {"findByOrder","clientId=IBEE", "orderId=book-37843"};
+		//String[] argDev = {"findByOrder","clientId=IBEE", "orderId=book-37843"};
 		
 		// extract the payment information
-		if(isDevMode) {
-			dataExtractor(argDev);
-		}else {
+		
 			dataExtractor(args);
-		}
+		
 		
 		//execute the operation either payment or inquiry
 		if(operation.equalsIgnoreCase(AppConstants.TRANSACTION_TYPE_REGISTER) || operation.equalsIgnoreCase(AppConstants.TRANSACTION_TYPE_AUTHORISE) 
@@ -115,7 +113,7 @@ public class ExtractorController {
 				}
 			}
 		}else {
-			throw new Exception("Please specify a command. Available commands: register, authorise, capture, reverse, findByOrder, findPending, findTotal");
+			throw new Exception(AppExceptionMessages.INVALID_ARGUMENTS);
 			//logger.error("Please specify a command. Available commands: register, authorise, capture, reverse, findByOrder, findPending, findTotal");
 		}
 	}

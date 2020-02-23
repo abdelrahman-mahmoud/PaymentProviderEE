@@ -1,44 +1,28 @@
 package com.payment.ee;
 
-import java.util.Random;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.apache.log4j.Logger;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.mockito.internal.matchers.Any;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.mchange.util.AssertException;
-import com.payment.ee.constants.AppConstants;
+import com.payment.ee.constants.AppExceptionMessages;
 import com.payment.ee.controller.ExtractorController;
-import com.payment.ee.controller.PaymentController;
 import com.payment.ee.dao.CurrencyDAO;
 import com.payment.ee.dao.OrderPaymentDAO;
 import com.payment.ee.dao.OrderStatusDAO;
 import com.payment.ee.dao.PaymentMethodDAO;
 import com.payment.ee.dao.StatusDAO;
 import com.payment.ee.dao.TransactionTypeDAO;
-import com.payment.ee.daoimpl.CurrencyDAOImpl;
 import com.payment.ee.entitiy.Currency;
-import com.payment.ee.entitiy.OrderPayment;
 import com.payment.ee.entitiy.OrderStatus;
 import com.payment.ee.entitiy.PaymentMethod;
 import com.payment.ee.entitiy.TransactionType;
-import com.payment.ee.exceptions.CurrencyNotSupportedException;
-import com.payment.ee.pojo.OutputMessage;
 import com.payment.ee.pojo.PaymentTransaction;
-import com.payment.ee.service.OrderPaymentService;
 import com.payment.ee.serviceimpl.OrderPaymentServiceImpl;
 
 public class OrderPaymentTest {
@@ -93,7 +77,7 @@ public class OrderPaymentTest {
 		 extractorController.perform(null);
 		}
 		catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Please specify a command. Available commands: register, authorise, capture, reverse, findByOrder, findPending, findTotal");
+			Assert.assertEquals(e.getMessage(), AppExceptionMessages.INVALID_ARGUMENTS);
 		}
 
 	}

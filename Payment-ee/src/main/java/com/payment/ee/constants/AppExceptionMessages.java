@@ -11,5 +11,6 @@ public class AppExceptionMessages {
 	public static final String INVALID_TRANSITION = "Invalid workflow transition ";
 	public static final String ORDER_IS_ALREADY_CAPTURED = "Multiple successful payments for the same order is not allowed";
 	public static final String No_RECORD_MATCHES_THE_SEARCH_CRITERIA = "No Record(s) matches the search criteria ";
+	public static final String INVALID_ARGUMENTS = "Please specify a command. Available commands: register, authorise, capture, reverse, findByOrder, findPending, findTotal";
 
 }
