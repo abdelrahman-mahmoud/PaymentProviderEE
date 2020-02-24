@@ -84,6 +84,9 @@ public class ExtractorController {
 					} else if (operation.equalsIgnoreCase(AppConstants.TRANSACTION_TYPE_REVERSE)) {
 						paymentTransaction.setTransactionType(AppConstants.TRANSACTION_TYPE_REV_CODE);
 						isValidOperation = true;
+					} else if (operation.equalsIgnoreCase(AppConstants.REPORT_FIND_BY_ORDER_ID_CLIENT_ID) || operation.equalsIgnoreCase(AppConstants.REPORT_FIND_PENDING)
+							|| operation.equalsIgnoreCase(AppConstants.REPORT_TOTAL_AMOUNT_OF_SUCCESS_PAYMENTS)) {
+						isValidOperation = true;
 					}
 					if(operation == null || "".equals(operation) || !isValidOperation) {
 						throw new Exception(AppExceptionMessages.INVALID_ARGUMENTS);

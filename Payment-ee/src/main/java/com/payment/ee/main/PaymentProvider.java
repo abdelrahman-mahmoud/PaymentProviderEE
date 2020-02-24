@@ -10,13 +10,13 @@ import com.payment.ee.controller.ExtractorController;
  * Hello world!
  *
  */
-public class Paymentprovider {
-	
+public class PaymentProvider {
+	private static final Logger logger = Logger.getLogger(PaymentProvider.class);
 	public static void main(String[] args) {
 		// entry point
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(PaymentEEConfig.class);
 		ExtractorController extractorController = context.getBean("extractorController", ExtractorController.class);
-		Logger logger = context.getBean("logger", Logger.class);
+		
 		try {
 			extractorController.perform(args);
 		}catch (Exception e) {

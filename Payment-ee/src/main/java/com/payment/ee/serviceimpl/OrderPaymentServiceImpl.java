@@ -229,7 +229,7 @@ public class OrderPaymentServiceImpl implements OrderPaymentService {
 		OrderPayment orderPayment = retrieveOrderPaymentByClientIdOrderId(paymentTransaction);
 
 		// Multiple successful payments for the same order should be prevented
-		if (orderPayment.getOrderStatus().getId() == retrieveTransactionType("CAP").getId()) {
+		if (orderPayment.getOrderStatus().getId() == retrieveTransactionType("CAP").getId() && nextOrderStatusRequestByClient.getOrderStatusCode().equalsIgnoreCase("CAP")) {
 			throw new TransactionWorkflowException(AppExceptionMessages.ORDER_IS_ALREADY_CAPTURED);
 		}
 

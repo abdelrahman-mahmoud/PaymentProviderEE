@@ -21,7 +21,7 @@ public class AppConstants {
 	//Reports
 	public static final String REPORT_FIND_BY_ORDER_ID_CLIENT_ID = "findByOrder";
 	public static final String REPORT_FIND_PENDING = "findPending";
-	public static final String REPORT_TOTAL_AMOUNT_OF_SUCCESS_PAYMENTS = "totalAmountOfSuccessPayments";
+	public static final String REPORT_TOTAL_AMOUNT_OF_SUCCESS_PAYMENTS = "findTotal";
 	
 
 }
